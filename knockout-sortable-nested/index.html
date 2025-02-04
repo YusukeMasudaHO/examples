@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Parent-Child Sortable Example</title>
+
+    <script type='text/javascript' src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type='text/javascript' src="https://knockoutjs.com/downloads/knockout-3.5.1.js"></script>
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/knockout-sortable/1.2.0/knockout-sortable.min.js"></script>
+
+    <style type='text/css'>
+        .parent-wrapper {
+            margin: 10px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .parent {
+            margin: 5px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+
+        .child-wrapper {
+            min-height: 50px;
+        }
+
+        .child {
+            margin: 5px;
+            padding: 5px;
+            background-color: #d0d0d0;
+            border: 1px solid #ccc;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent-wrapper" data-bind="sortable: { data: parents, connectClass: 'parent-connect' }">
+        <!-- Foreach to generate each parent container -->
+        <div class="parent">
+            <div class="child-wrapper" data-bind="sortable: children">
+                <!-- Sortable children within each parent -->
+                <div class="child" data-bind="text: name"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type='text/javascript'>
+        var Child = function(name) {
+            this.name = ko.observable(name);
+        };
+
+        var Parent = function(children) {
+            this.children = ko.observableArray(children);
+        };
+
+        var ViewModel = function() {
+            var self = this;
+
+            self.parents = ko.observableArray([
+                new Parent([new Child('Child 1A'), new Child('Child 1B')]),
+                new Parent([new Child('Child 2A'), new Child('Child 2B')]),
+                new Parent([new Child('Child 3A'), new Child('Child 3B')])
+            ]);
+        };
+
+        ko.applyBindings(new ViewModel());
+    </script>
+</body>
+</html>
